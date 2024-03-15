@@ -1,0 +1,36 @@
+<!DOCTYPE html >
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>隨身系統</title>
+    </head>
+
+    <body>
+        <button onclick="ubikeSiteQuery()">ubike</button>
+        <div id="result"></div>
+        <script>
+            function ubikeSiteQuery() {
+                var url = 'https://data.ntpc.gov.tw/api/datasets/010e5b15-3823-4b20-b401-b1cf000550c5/json?size=88';
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        var resultDiv = document.getElementById('result');
+                        resultDiv.innerHTML = ''; //清除之前的結果
+                        data.forEach(site => {
+                            if (site.sna === 'YouBike2.0_集成成功路口' || site.sna === 'YouBike2.0_中正北路193巷(愛買三重店)') {
+                                var siteInfo = document.createElement('p');
+                                siteInfo.textContent = site.sna + '\t總數：' + site.tot + '\t可借：' + site.sbi;
+                                resultDiv.appendChild(siteInfo);
+                            }
+                        });
+                    })
+                    .catch(error => console.error('取得數據時出錯：', error));
+            }
+        </script>
+    </body>
+
+</html>
+
